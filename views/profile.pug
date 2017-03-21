@@ -1,0 +1,40 @@
+extends layout
+
+block content
+  .container
+    .col-lg-12.well
+      .row
+        .col-md-4
+          img.profileimg(src=profile.photo alt="Image Title")
+        .col-md-8
+          .row
+            .col-md-10
+              | #{text.profile_login} : #{profile.login} 
+          .row
+            .col-md-10
+              | #{text.profile_mail} : #{profile.mail}
+          .row
+            .col-md-10
+              | #{text.profile_firstname} : #{profile.firstname}
+          .row
+            .col-md-10
+             | #{text.profile_lastname} : #{profile.lastname}
+    .col-lg-12.well
+      if (history == null)
+        .row
+          .col-md-12
+          |  #{text.profile_history_pb}
+      else
+        each torrent in history
+          a(href='/movie/' + torrent.hebergeur + '/' + torrent.id_movie)
+            .row
+              .col-md-1
+                img.profilehistory(src=torrent.image)
+              .col-md-11
+                |#{torrent.name}
+                if (torrent.season)
+                  br
+                  |#{torrent.season}
+                br
+                |#{torrent.timestamp}
+            

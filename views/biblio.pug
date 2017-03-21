@@ -1,0 +1,134 @@
+extends layout
+block content
+    .container
+        - if(notice)
+          .alert.alert-warning
+            strong=notice
+        input(type='hidden', name='search', value=search, id='search')
+        form.form-horizontal(method='get' action='/biblio')
+            .form-group 
+                .col-lg-8
+                    .input-group.add-on
+                        input.form-control(type='text' name='search' placeholder='Search')
+                        .input-group-btn
+                            button.btn.btn-default(type='submit')
+                              i.glyphicon.glyphicon-search
+            .form-group
+                button.btn.btn-link(type='button', onclick='showsearch()')
+                  span.glyphicon.glyphicon-cog
+                  |   #{text.advanced_search}
+        #id01(style='display:none;')
+            .col-md-5.col-sm-6.col-xs-12
+                .form-group
+                    label  #{text.sortBy}
+                .form-group
+                    button#alphBnt #{text.name}
+                    button#yearBnt #{text.year}
+                    button#rateBnt #{text.note}
+                    button#seedBnt Seeders
+                    button#leechBnt Leechers
+                    .form-group
+                        input#reverseBnt(type='checkbox', checked='', data-toggle='toggle', data-on="<i class='fa fa-arrow-up'></i>", data-off="<i class='fa fa-arrow-down'></i>")
+            .col-md-3.col-sm-3.col-xs-3
+                label Filtres:
+                .form-group
+                    label #{text.note} :
+                        input#rateFtr(type='text', value='', data-slider-min='0', data-slider-max='10', data-slider-step='0.1', data-slider-value='[0,10]')
+                    
+                    label #{text.year} :
+                    input#yearFtr(type='text', value='', data-slider-min='1900', data-slider-max='2018', data-slider-step='1', data-slider-value='[1900,2018]')
+                    
+                    label Seeders :
+                        input#seedFtr(type='text', value='', data-slider-min='0', data-slider-max='10000', data-slider-step='10', data-slider-value='[0,10000]')
+    - if(nbResult > 0)
+        - if (search && search !== '')
+            h2(style="text-align: center") #{nbResult} torrents #{text.biblio_search}
+        #list
+            each torrent in searchResult
+                .full-stream-view.full-stream-view-hover
+                  - if (torrent.imdb.poster !== 'N/A')
+                    img.profile-avatar(width='210', height='270', src=torrent.imdb.poster, alt='Movie avatar')
+                  - else
+                    img.profile-avatar(width='210', height='270', src='/images/no-poster.png', alt='Movie avatar')
+                  .short-rate
+                    span#ratig-layer-1
+                      - if (torrent.biblio == 'piratebay')
+                        - if (torrent.info.season)
+                            span.positive-rate Episode #{torrent.info.episode}
+                  .short-rate(style='left: 0;right:inherit;')
+                    span#ratig-layer-1
+                      - if (torrent.biblio == 'piratebay')
+                            - if (torrent.info.season)
+                                span.no-rate(style='border-radius: 0 0 10px 0;background:#0F72B9;') #{text.season} #{torrent.info.season}
+                  - if (torrent.isView == 1)
+                    .short-seen(style='bottom:0;top:inherit;')
+                      img(style='height:26px' src="/images/seen.png")
+                  .short-rate(style='bottom:0;top:inherit;')
+                    span#ratig-layer-1
+                      span.no-rate.rating(style='border-radius: 10px 0 0 0;background:#A4A709;font-size: 12px;font-weight: bold;padding: 2px 5px;') #{torrent.imdb.rating}
+                  h3.mov-title
+                    - if (torrent.biblio == 'piratebay')
+                        a(href='/movie/pb/' + torrent.id) #{torrent.imdb.title}
+                    - else
+                        a(href='/movie/yts/' + torrent.id) #{torrent.imdb.title}
+                  .full-mask
+                    .full-mask-in
+                      h2
+                        - if (torrent.biblio == 'piratebay')
+                            a(href='/movie/pb/' + torrent.id) 
+                                .torrentTitle 
+                                    h5 #{torrent.imdb.title}
+                        - else
+                            a(href='/movie/yts/' + torrent.id) 
+                                .torrentTitle 
+                                    h5 #{torrent.imdb.title}
+                      .short-insider(style="text-align: center")
+                        .torrentYear
+                            h5 #{torrent.imdb.year}
+                        h5
+                            .torrentSeed
+                                | #{torrent.seeders}
+                            | seeders
+                        h5 
+                            .torrentLeech
+                                | #{torrent.leechers}
+                            | leechers
+                        h6 Source : #{torrent.biblio}
+                      - if (torrent.biblio == 'piratebay')
+                        a.fullink-info(href='/movie/pb/' + torrent.id) #{text.consult}
+                      - else
+                        a.fullink-info(href='/movie/yts/' + torrent.id) #{text.consult}
+    - else
+        h1 
+            #{text.no_torrent}
+    button.btn.btn-primary.btn-lg.back(onclick='scroll()') #{text.backtotop}
+    
+block script
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/css/bootstrap-slider.min.css')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/bootstrap-slider.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js')
+    
+    link(href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css", rel="stylesheet", integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN", crossorigin="anonymous")
+    link(href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet")
+    script(src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js")
+    script(type='text/javascript' src='/javascripts/search.js')
+    script.
+        function showsearch() {
+            if(document.getElementById('id01').style.display=='block') {
+                document.getElementById('id01').style.display='none';
+              }
+              else{
+                      document.getElementById('id01').style.display='block';
+              }
+        }
+    script.
+        function scroll()
+        {
+            var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+            if(scrollTop > 0)
+            {
+                scrollBy(0, -15);
+                setTimeout(scroll, 5);
+            }
+        return true;
+        }

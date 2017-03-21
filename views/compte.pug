@@ -1,0 +1,61 @@
+extends layout
+block header
+    link(rel='stylesheet', href='/stylesheets/movie.css')
+block content
+    .container
+      - if(notice)
+        .alert.alert-warning
+          strong=notice
+      .col-lg-12.well
+        .row
+          .col-sm-12
+            .form-group
+              .row
+                form(action='/users/compte', method='post')
+                  .col-sm-8
+                    .row
+                      .col-sm-10.form-group
+                        label * #{text.profile_mail}
+                        input.form-control(name='mail' type='text', value=profile.mail)
+                      .col-sm-10.form-group
+                        label * #{text.profile_firstname}
+                        input.form-control(name='firstname' type='text' value=profile.prenom)
+                      .col-sm-10.form-group
+                        label * #{text.profile_lastname}
+                        input.form-control(name='lastname' type='text' value=profile.nom)
+                      .col-sm-10.form-group
+                        label * #{text.profile_lang}
+                        select.form-control(name='lang')
+                          option(value='fr') Francais
+                          option(value='en') English
+                      .col-sm-10.form-group
+                        button.btn.btn-lg.btn-info(type='submit') #{text.update}
+      .col-lg-12.well
+        .row
+          .col-sm-12
+            .form-group
+              .row
+                .col-sm-4
+                form(enctype='multipart/form-data', action='/users/changeimg', method='post')
+                  img.profileimg(src=profile.photo alt="Image Title" )
+                  label * #{text.profile_picture}
+                  input.well.well-sm(type='file' accept="image/*" name='picture')
+                  button.btn.btn-lg.btn-info(type='submit') #{text.change_picture}
+                  
+      if user.provenance == 'local'
+        .col-lg-12.well
+          .row
+            form(action='/users/comptepass', method='post')
+              .col-sm-12
+                  .form-group
+                    .row
+                      .col-sm-6.form-group
+                        label * #{text.profile_password_current}
+                        input.form-control(name='passactuel' type='password')
+                      .col-sm-6.form-group
+                        label * #{text.profile_password}
+                        input.form-control(name='pass' type='password')
+                      .col-sm-6.form-group
+                        label * #{text.profile_password_confirm}
+                        input.form-control(name='passconf' type='password')
+                    button.btn.btn-lg.btn-info(type='submit') #{text.change_password}

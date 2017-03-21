@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    .container
+    if(notice)
+        .alert.alert-warning
+            strong=notice
+    .contentoff
+        .backgroundimage
+            .block
+                h1(style='font-size: 4vw') #{text.home_message1} #{user.login}
+                h2(style='font-size: 3vw') #{text.home_message2} 
+                - if (!user.login)
+                    a#reg(href='/auth/register') #{text.home_message3}

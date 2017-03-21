@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  .container
+    .col-lg-12
+        if (profile != null)
+            each ligne in profile
+                .row.well
+                    .col-md-2
+                      if (ligne.photo != null)
+                        a(href='/users/'+ligne.id)
+                          img.profileimg(src=ligne.photo alt="Image Title")
+                      else
+                        a(href='/users/'+ligne.id)
+                          img.profileimg(src='/images/no-poster.png' alt="Image Title")
+                    .col-md-10
+                      .row
+                        .col-md-10
+                          | #{text.profile_login} : #{ligne.login} 
+                      .row
+                        .col-md-10
+                          | #{text.profile_firstname} : #{ligne.firstname}
+                      .row
+                        .col-md-10
+                         | #{text.profile_lastname} : #{ligne.lastname}
+        else
+            #{text.no_user}

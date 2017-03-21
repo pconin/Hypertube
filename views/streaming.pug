@@ -1,0 +1,10 @@
+.post-video
+    .fluid-width-video-wrapper
+        video(controls='controls' autoplay="false")
+            source(src='/streaming/video')
+            |    Your browser does not support HTML5 video.
+            - if (existSubtitle.fr == true)
+                track(label='french' kind='subtitles' srclang='fr' src=frsub)
+            - if (existSubtitle.en == true)
+                track(label='english' kind='subtitles' srclang='en' src=engsub)
+a(href='/movie/' + source + '/' + movie_id) #{text.streaming_back}

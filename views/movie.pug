@@ -1,0 +1,173 @@
+extends layout
+block header
+    link(rel='stylesheet', href='/stylesheets/movie.css')
+
+block content
+    
+    .container
+        - if (notice)
+            .alert.alert-warning
+                strong=notice
+        .row
+            .col-sm-12
+                .panel.panel-white.profile-widget
+                    .row
+                        - if (movie.biblio == 'yts')
+                            .col-sm-12
+                                .image-container.bg2(style='background:url('+movie.background_image_original+')')
+                                    img.avatar(src=movie.large_cover_image, alt='avatar')
+                            .col-sm-12
+                                .details
+                                    h4
+                                        | #{movie.title}
+                                        i.fa.fa-sheild
+                                    div #{movie.year}
+                        - else if (movie.info.title)
+                            - if (movie.imdb.imdbid)
+                                .col-sm-12
+                                    .image-container.bg2
+                                        - if (movie.imdb.poster && movie.imdb.poster !== 'N/A')
+                                            img.avatar(src=movie.imdb.poster, alt='avatar')
+                            .col-sm-12
+                                .details
+                                    h4
+                                        | #{movie.info.title}
+                                    - if (movie.info.season)
+                                        p #{text.season} #{movie.info.season} #{text.episode} #{movie.info.episode}
+                                    div #{movie.info.year}
+
+                .col-sm-12.col-md-6
+                    .panel.panel-white.post
+                        .post-heading
+                            .pull-left.image
+                               img.img-circle.avatar(src='http://p7.storage.canalblog.com/73/47/993463/95151388_o.gif', alt='info panel')
+                            .pull-left.meta
+                                .title.h5
+                                    b #{text.info_torrent}
+                                h6.text-muted.time source: #{movie.biblio}
+                        .post-image
+                            - if (movie.background_image)
+                                img.image(src=movie.background_image, alt='image post')
+                        .post-description
+                            - if (movie.name)
+                                p #{text.torrent_name} : #{movie.name}
+                            - if (movie.info.season)
+                                p #{text.season} #{movie.info.season} Episode #{movie.info.episode}
+                            - if (movie.runtime)
+                                p #{movie.runtime} minutes
+                            - if (movie.seeders)
+                                p Seeders : #{movie.seeders}
+                            - if (movie.leechers)
+                                p Leechers : #{movie.leechers}
+                            - if (movie.uploadDate)
+                                p #{text.upload_date} #{movie.uploadDate}
+                            - if (movie.link)
+                                a(href=movie.link)
+                                    p #{text.torrent_link}
+                            - if (movie.info.year)
+                                p Année : #{movie.info.year}
+                            -if (movie.title)
+                                p Titre: #{movie.title}
+                            -if (movie.year)
+                                p Année: #{movie.year}
+                            -if (movie.rating)
+                                p Note YTS: #{movie.rating}
+                            - if (movie.download_count)
+                                p Downloads: #{movie.download_count}
+                            -if (genres)
+                                each genre in genres
+                                    span.label.label-success(style='display: inline-block;') #{genre}
+                            -if (movie.description_full && !movie.imdb.imdbid)
+                                p #{movie.description_full}
+                            -if (movie.language)
+                                p Langue : #{movie.language}
+                            p #{text.subtitle} : 
+                                -if (existSubtitle.fr)
+                                    | Fr / 
+                                -else
+                                    | X / 
+                                -if (existSubtitle.en)
+                                    | En
+                                -else
+                                    | X
+                            
+                .col-sm-12.col-md-6
+                    .panel.panel-white.post
+                        .post-heading
+                            .pull-left.image
+                                img.img-circle.avatar(src='http://www.numerama.com/content/uploads/2008/09/imdb-logo-new22.png', alt='imdb image')
+                            .pull-left.meta
+                                .title.h5
+                                    | Fiche iMDB
+                        .post-description
+                            - if (movie.imdb.imdbid)
+                                p #{text.title} : #{movie.imdb.title}
+                                p #{text.year} : #{movie.imdb.year}
+                                p #{text.rated} : #{movie.imdb.rated}
+                                p #{text.length} : #{movie.imdb.runtime}
+                                p #{text.genre} : #{movie.imdb.genres}
+                                p #{text.director} : #{movie.imdb.director}
+                                p #{text.writer} : #{movie.imdb.writer}
+                                p #{text.actors} : #{movie.imdb.actors}
+                                p Synopsis : #{movie.imdb.plot}
+                                p #{text.awards} : #{movie.imdb.awards}
+                                p #{text.note} : #{movie.imdb.rating}
+                                p Votes : #{movie.imdb.votes}
+                                a(href=movie.imdb.imdburl)
+                                    p Lien fiche iMDB
+                            
+                            - else
+                                p
+                                    | #{text.no_imdb}
+                .col-sm-12
+                    .panel.panel-white.post
+                        .post-heading.center
+                            .pull-left.image
+                                a(href='/streaming/' + movie.source + '/' + movie.id, style='margin-left:"50px"')
+                                    img.img-circle.avatar(src='http://lh6.ggpht.com/t0m-wIs_wo9MHbcGYcNGr5VOF-h99jQ9LZgIppcGJXddAXDGUgbg8auXdtTVlEnlIg=w300', alt='player image')
+                            .pull-left.meta
+                                .title.h5
+                                    b Player
+
+
+                            
+
+                .col-sm-12
+                    .panel.panel-white.post
+                        .post-heading
+                            .pull-left.image
+                                img.img-circle.avatar(src='https://support.apple.com/content/dam/edam/applecare/images/en_US/icloud/featured-content-messages-osx-icon_2x.png', alt='commentaries panel')
+                            .pull-left.meta
+                                .title.h5
+                                    b Commentaires
+                        .post-footer
+                            - if (coms)
+                                ul.comments-list
+                                    each com in coms
+                                        li.comment
+                                            a.pull-left(gref='javascript:void(0);')
+                                                img.avatar(src=com.photo)
+                                            .comment-body
+                                                .comment-heading
+                                                    a(href='/users/'+com.idunique) 
+                                                        | #{com.login} 
+                                                    h5.time #{com.date}
+                                                p #{com.contenu}
+                                            - if (user.login == com.login)
+                                                form.form-horizontal(action='/movie/delCom', ,='', method='post')
+                                                    input.btn.btn-primary(value='Supprimer', type='submit' name="delCom")
+                                                    input(type='hidden', name='com_id', value=com.com_id)
+                                                    input(type='hidden', name='movie_id', value=movie.id)
+                                                    input(type='hidden', name='movie_source', value=movie.biblio)
+                            - else
+                                h4 Soyez le premier à commenter! 
+                            .input-group
+                                form.form-horizontal(action='/movie/addCom', ,='', method='post')
+                                    .row
+                                        input.form-control(name='com_contenu', placeholder='Add a comment', type='text')
+                                        input.btn.btn-primary(value='Valider', type='submit' name="addCom")
+                                    input(type='hidden', name='movie_id', value=movie.id)
+                                    input(type='hidden', name='movie_source', value=movie.biblio)
+
+
+    

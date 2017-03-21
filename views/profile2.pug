@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  .container
+    .col-lg-12.well
+      .row
+        .col-md-4
+          img.profileimg(src=profile.photo alt="Image Title")
+        .col-md-8
+          .row
+            .col-md-10
+              | #{text.profile_login} : #{profile.login} 
+          .row
+            .col-md-10
+              | #{text.profile_firstname} : #{profile.prenom}
+          .row
+            .col-md-10
+             | #{text.profile_lastname} : #{profile.nom}

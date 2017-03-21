@@ -1,8 +1,6 @@
-# Hypertube
+lance le serveur avec : 
+DEBUG=myapp:* npm start
 
-# Synopsis
-Projet web 42, popcorn time like
-
-
-# Rate
-98/100
+http://passportjs.org/docs/overview
+http://expressjs.com/fr/guide/writing-middleware.html
+http://expressjs.com/fr/api.html

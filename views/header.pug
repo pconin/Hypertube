@@ -1,0 +1,66 @@
+nav.navbar.navbar-inverse(style="margin-bottom: 0px; border-radius: 0px")
+  .container-fluid
+    .navbar-header
+      a.navbar-brand(href='/') Hypertube
+    ul.nav.navbar-nav
+      li
+        a(href='/') #{text.menu_home}
+      if user.login  
+        li
+          a(href='/biblio') #{text.menu_library}
+        li
+          a(href='/users/') #{text.menu_profile}
+        li
+          a(href='/users/compte') #{text.menu_setting} 
+        li
+          a(href='/users/all') #{text.menu_all}
+    ul.nav.navbar-nav.navbar-right
+      if user.login
+        li
+          a(href='/logout')
+            span.glyphicon.glyphicon-log-in
+            |  #{text.menu_logout}
+      else
+        li
+          a(href='/auth/register')
+            span.glyphicon.glyphicon-user
+            | #{text.menu_signup}
+        li.dropdown
+          a.dropdown-toggle(href='#', data-toggle='dropdown')
+            b Login
+            span.caret
+          ul#login-dp.dropdown-menu
+            li
+              .row
+                .col-md-12
+                  | Login via
+                  .social-buttons
+                    a.btn.btn-insta(href='/auth/insta')
+                      img.img-connect(src='https://lh3.googleusercontent.com/aYbdIM1abwyVSUZLDKoE0CDZGRhlkpsaPOg9tNnBktUQYsXflwknnOn2Ge1Yr7rImGk=w300', alt='Instagram connect')
+                    a.btn.btn-42(href='/auth/42')
+                      img.img-connect(src='https://pbs.twimg.com/profile_images/719463883904315392/gNpb0Xqn.jpg', alt='42 connect')
+                  |                                 or
+                  form#login-nav.form(role='form', method='post', action='/auth/local', accept-charset='UTF-8')
+                    .form-group
+                      label.sr-only Login
+                      input.form-control.input-lg(type='text', name='login', placeholder='Login', required='')
+                    .form-group
+                      label.sr-only Password
+                      input.form-control.input-lg(type='password', name='password', placeholder='Password', required='')
+                    .form-group
+                      button.btn.btn-primary.btn-block(type='submit') Sign in
+                .bottom.text-center
+                  .help-block.text-right
+                    | Forget the password?
+                  form#login-nav.form(role='form', method='post', action='/auth/forgot', accept-charset='UTF-8')
+                    .form-group
+                      label.sr-only Login
+                      input.form-control(type='mail', name='mail', placeholder='Email address' required='')
+                    .form-group
+                      button.btn.btn-primary.btn-sm(type='submit') Reset
+                      
+      meta(name='viewport', content='width=device-width, initial-scale=1')
+      script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')
+      script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+
+

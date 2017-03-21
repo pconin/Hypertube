@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  .container
+    if(notice)
+      .alert.alert-warning
+        strong=notice
+    h1.display-4.m-b-2 #{text.menu_signup}
+    .container
+        .col-lg-10.well
+          .row
+            form(enctype='multipart/form-data', action='/auth/register', method='post')
+              .col-sm-11
+                .form-group
+                .row
+                  .col-sm-12.form-group
+                    label * #{text.profile_login}
+                    input.form-control(name='login' placeholder='Enter login here...')
+                .row
+                  .col-sm-12.form-group
+                    label * #{text.profile_firstname}
+                    input.form-control(name='prenom' type='text', placeholder='Enter First Name Here..')
+                  .col-sm-12.form-group
+                    label * #{text.profile_lastname}
+                    input.form-control(name='nom' type='text', placeholder='Enter Last Name Here..')
+                .row
+                  .col-sm-12.form-group
+                    label * #{text.profile_password}
+                    input.form-control(name='password' type='password' placeholder='Enter Password Here..')
+                  .col-sm-12.form-group
+                    label * #{text.profile_password_confirm}
+                    input.form-control(name='passwordconf' type='password' placeholder='Same Here..')
+                .row
+                  .col-sm-12.form-group
+                    label * #{text.profile_picture}
+                    input.text-center.center-block.well.well-sm(type='file' accept="image/*" name='picture')
+                .row
+                  .col-sm-12.form-group
+                    label * #{text.profile_mail}
+                    input.form-control(name='mail' type='email', placeholder='Enter Email Address Here..')
+                button.btn.btn-lg.btn-info(type='submit') Submit
