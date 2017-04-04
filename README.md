@@ -1,8 +1,10 @@
 # Hypertube
 
+
 # Synopsis
 42 web project.
-Torrent streamer, online library, popcorn time like
+Online video streamer, which previously download files server side by BitTorrent protocol.
+Check hypertube-subject.pdf for more informations
 
 # Installation
 `npm install`
